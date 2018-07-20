@@ -1,0 +1,22 @@
+{
+
+  "manifest_version": 2,
+  "name": "Selfprism",
+  "version": "1.0",
+
+  "description": "Send the content, URL and title of every visited page to a localhost address",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+  "permissions": ["notifications"],
+  "background": {
+    "scripts": ["background-script.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["content-logger.js"]
+    }
+  ]
+}
