@@ -1,9 +1,14 @@
 """Server to log each JSON to a single randomly named file"""
+import os
 import json
 import uuid
 
 from aiohttp import web
 import aiohttp_cors
+
+if not os.path.exists('logged'):
+    os.makedirs('logged')
+    print('I created the logged folder')
 
 
 async def handle_track(request):
