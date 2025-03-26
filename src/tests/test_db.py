@@ -91,3 +91,33 @@ class TestDb:
         assert db.con.execute("SELECT COUNT(*) FROM visits_embeddings").fetchone() == (
             1,
         )
+
+    def test_db_delete_visit(self, db: DB):
+        visit = Visit(
+            url="example.com",
+            title="Example",
+            description="Example description",
+            referrer="",
+            content_html="Hello world",
+        )
+        visit_id = db.insert_visit(visit)
+
+        assert visit_id is not None
+
+        db_visit = db.get_visit(visit_id)
+
+        assert db_visit.id == visit_id
+
+        assert db.con.execute("SELECT COUNT(*) FROM visits").fetchone() == (1,)
+        assert db.con.execute("SELECT COUNT(*) FROM visits_html").fetchone() == (1,)
+        assert db.con.execute("SELECT COUNT(*) FROM visits_embeddings").fetchone() == (
+            1,
+        )
+
+        db.delete_visit(visit_id)
+
+        assert db.con.execute("SELECT COUNT(*) FROM visits").fetchone() == (0,)
+        assert db.con.execute("SELECT COUNT(*) FROM visits_html").fetchone() == (0,)
+        assert db.con.execute("SELECT COUNT(*) FROM visits_embeddings").fetchone() == (
+            0,
+        )

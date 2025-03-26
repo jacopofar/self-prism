@@ -248,5 +248,22 @@ class DB:
             content_html=row[5],
         )
 
+    def delete_visit(self, item_id: int):
+        self.con.execute("BEGIN TRANSACTION")
+        cur = self.con.cursor()
+        cur.execute(
+            """
+            DELETE FROM visits WHERE id = ?
+            """,
+            (item_id,),
+        )
+        cur.execute(
+            """
+            DELETE FROM visits_embeddings WHERE visit_id = ?
+            """,
+            (item_id,),
+        )
+        self.con.commit()
+
 
 db = DB("prism.sqlite3")

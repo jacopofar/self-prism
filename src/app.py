@@ -18,6 +18,7 @@ app = Litestar(
     [
         handlers.log_visit,
         handlers.get_visit,
+        handlers.delete_visit,
         handlers.get_search,
     ],
     cors_config=cors_config,
