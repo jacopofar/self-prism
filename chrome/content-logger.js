@@ -46,6 +46,10 @@ async function serializeHTML() {
   `;
   html += await serializeStyles();
   html += `</head>`;
+  const scripts = document.querySelectorAll("script");
+  for (const script of scripts) {
+    script.remove();
+  }
   html += new XMLSerializer().serializeToString(document.body);
   html += `</html>`;
   return html;
