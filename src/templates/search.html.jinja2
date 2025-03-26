@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <div class="p-8 flex flex-col gap-4">
+        <form method="get">
+            <input type="search" class="h-10 border px-2" name="query" placeholder="Search your history"
+                value="{{ query or '' }}" />
+            <button type="submit" class="border h-10 px-2 cursor-pointer">Search</button>
+        </form>
+        <main>
+            <ul class="flex flex-col gap-6">
+                {% for visit in visits %}
+                <li>
+                    <a href="{{ visit.url }}" aria-labelledby="title-{{ visit.id }}" class="hover:bg-zinc-100 focus-visible:bg-zinc-50">
+                        <article class="max-w-xl">
+                            <h2 class="text-lg font-medium" id="title-{{ visit.id }}">{{ visit.title }}</h2>
+                            <p class="cursor-pointer text-sm text-blue-700">{{ visit.url }}</p>
+                            <p>{{ visit.description or "" }}</p>
+                        </article>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </main>
+    </div>
+</body>
+
+</html>

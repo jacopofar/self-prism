@@ -166,6 +166,61 @@ class DB:
             self.con.rollback()
             return None
 
+    def semantic_search(self, embeddings: list[float], limit=20):
+        cur = self.con.cursor()
+        rows = cur.execute(
+            """
+            WITH search_subquery AS (
+                SELECT ve.visit_id AS visit_id FROM visits_embeddings ve
+                WHERE ve.embeddings MATCH ?
+                ORDER BY ve.distance
+                LIMIT ?
+            )
+            SELECT ss.visit_id, v.url, v.title, v.description, v.referrer FROM search_subquery ss
+            JOIN visits v ON ss.visit_id = v.id
+        """,
+            [sqlite_vec.serialize_float32(embeddings), limit],
+        ).fetchall()
+        return [
+            Visit(
+                id=row[0],
+                url=row[1],
+                title=row[2],
+                description=row[3],
+                referrer=row[4],
+                content_html="",
+            )
+            for row in rows
+        ]
+
+    def latest_visits(self, limit=20):
+        cur = self.con.cursor()
+        rows = cur.execute(
+            """
+            SELECT
+                v.id,
+                v.url,
+                v.title,
+                v.description,
+                v.referrer
+            FROM visits v
+            ORDER BY id DESC
+            LIMIT ?
+        """,
+            [limit],
+        ).fetchall()
+        return [
+            Visit(
+                id=row[0],
+                url=row[1],
+                title=row[2],
+                description=row[3],
+                referrer=row[4],
+                content_html="",
+            )
+            for row in rows
+        ]
+
 
 
 db = DB("prism.sqlite3")
