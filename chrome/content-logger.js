@@ -2,45 +2,53 @@
  * @param {CSSStyleSheet} sheet
  */
 async function serializeSheet(sheet) {
-  if (!sheet.disabled && sheet.href != null) {
-    if (sheet.cssRules == null) {
-      // can be null because of cross origin policy
-      const res = await fetch(sheet.href); // works nicely because it hits the cache
-      if (res.ok) {
-        const style = await res.text();
-        return "<style>\n" + { style } + "\n</style>\n";
-      }
-    }
-    for (rule of sheet.cssRules) {
-      return "<style>\n" + rule.cssText + "\n</style>\n";
+  if (sheet.disabled) {
+    return "";
+  }
+
+  if (sheet.cssRules == null && sheet.href != null) {
+    // can be null because of cross origin policy
+    const res = await fetch(sheet.href); // works nicely because it hits the cache
+    if (res.ok) {
+      const style = await res.text();
+      return "<style>\n" + style + "\n</style>\n";
+    } else {
+      throw new Error(`Failed to load ${sheet}`);
     }
   }
-  return "";
+
+  let cssrules = "<style>";
+  for (rule of sheet.cssRules) {
+    cssrules += rule.cssText;
+  }
+  cssrules += "</style>";
+  return cssrules;
 }
 async function serializeStyles() {
   let cssrules = "";
   const sheets = document.styleSheets;
   for (const sheet of sheets) {
     try {
-      cssrules += sheet;
+      cssrules += await serializeSheet(sheet);
     } catch (error) {
-      console(error);
+      console.log(error);
     }
   }
   return cssrules;
 }
 
 async function serializeHTML() {
-  let body = "";
-  body += await serializeStyles();
-  const metaRefreshes = document
-    .querySelectorAll("meta[http-equiv='refresh']")
-    .values();
-  for (const meta of metaRefreshes) {
-    meta.remove();
-  }
-  body += new XMLSerializer().serializeToString(document);
-  return body;
+  let html = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8" />
+  `;
+  html += await serializeStyles();
+  html += `</head>`;
+  html += new XMLSerializer().serializeToString(document.body);
+  html += `</html>`;
+  return html;
 }
 
 function getDescription() {
