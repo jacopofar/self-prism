@@ -1,0 +1,22 @@
+[project]
+name = "self-prism"
+version = "0.1.0"
+description = "Server implementation to spy on yourself"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "litestar[standard]>=2.15.1",
+    "markitdown>=0.1.1",
+    "sentence-transformers>=3.4.1",
+    "sqlite-vec>=0.1.6",
+    "sqlite-zstd",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.11.2",
+]
+
+[tool.uv.sources]
+sqlite-zstd = { git = "https://github.com/phiresky/sqlite-zstd.git", subdirectory = "python" }
