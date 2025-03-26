@@ -16,6 +16,12 @@ async def log_visit(data: VisitRequest) -> int:
     return visit.id
 
 
+@get("/archive/{item_id:int}", name="archive")
+async def get_visit(item_id: int) -> Template:
+    visit = db.get_visit(item_id)
+    return Template(template_name="archive.html.jinja2", context={"visit": visit})
+
+
 @get(["/search", "/"])
 async def get_search(
     search_term: Annotated[str | None, Parameter(query="query")],

@@ -25,6 +25,7 @@
                             <p>{{ visit.description or "" }}</p>
                         </article>
                     </a>
+                    <a href="{{ url_for('archive', item_id=visit.id) }}" class="cursor-pointer text-sm text-blue-700">See archived copy</a>
                 </li>
                 {% endfor %}
             </ul>

@@ -221,6 +221,32 @@ class DB:
             for row in rows
         ]
 
+    def get_visit(self, item_id: int):
+        cur = self.con.cursor()
+        row = cur.execute(
+            """
+            SELECT
+                v.id,
+                v.url,
+                v.title,
+                v.description,
+                v.referrer,
+                vh.content_html
+            FROM visits v
+            JOIN visits_html vh ON vh.visit_id = v.id
+            WHERE v.id = ?
+            """,
+            (item_id,),
+        ).fetchone()
+
+        return Visit(
+            id=row[0],
+            url=row[1],
+            title=row[2],
+            description=row[3],
+            referrer=row[4],
+            content_html=row[5],
+        )
 
 
 db = DB("prism.sqlite3")

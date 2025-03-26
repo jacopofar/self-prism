@@ -1,5 +1,5 @@
 bootstrap:
-	echo "PYTHONPATH=." > .env
+	cp .env.template .env
 
 migrate:
 	uv run --env-file .env scripts/migrate.py
