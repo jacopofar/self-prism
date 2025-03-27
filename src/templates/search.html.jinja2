@@ -22,7 +22,7 @@
                     <a href="{{ visit.url }}" aria-labelledby="title-{{ visit.id }}" class="hover:bg-zinc-100 focus-visible:bg-zinc-50">
                         <article class="max-w-xl">
                             <h2 class="text-lg font-medium" id="title-{{ visit.id }}">{{ visit.title }}</h2>
-                            <p class="cursor-pointer text-sm text-blue-700">{{ visit.url }}</p>
+                            <p class="cursor-pointer text-sm text-blue-700 truncate">{{ visit.url }}</p>
                             <p>{{ visit.description or "" }}</p>
                         </article>
                     </a>
