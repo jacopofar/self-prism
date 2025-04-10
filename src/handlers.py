@@ -1,4 +1,6 @@
+import logging
 from typing import Annotated
+
 from litestar import get, post, delete
 from litestar.response import Template
 from litestar.params import Parameter
@@ -8,10 +10,13 @@ from src.search import Search
 from src.db import db
 from src.visits import Visit, VisitRequest
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @post("/log_visit")
 async def log_visit(data: VisitRequest) -> int:
     visit = Visit.from_visit_request(data)
+    logger.info(f"Visit at {visit.url}")
     db.insert_visit(visit)
     return visit.id
 
