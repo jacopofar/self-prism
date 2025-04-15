@@ -1,22 +1,19 @@
 {
-  "manifest_version": 3,
-  "browser_specific_settings": {
-  "gecko": {
-      "id": "selfprism@github.jacopofar",
-      "strict_min_version": "58.0"
-    }
-  },
-
-  "author": "selfprism@github.jacopofar",
+  "manifest_version": 2,
   "name": "Selfprism",
-  "version": "2.0.1",
-
   "description": "Send the content, URL and title of every visited page to a localhost address",
-
+  "version": "2.0.4",
+  "permissions": ["notifications"],
+  "action": {
+    "default_icon": {
+      "48": "icons/border-48.png"
+    },
+    "default_title": "Selfprism, registering all pages content"
+  },
+  "author": "selfprism@github.jacopofar",
   "icons": {
     "48": "icons/border-48.png"
   },
-  "permissions": ["notifications"],
   "background": {
     "scripts": ["background-script.js"]
   },
@@ -25,11 +22,5 @@
       "matches": ["*://*/*"],
       "js": ["content-logger.js"]
     }
-  ],
-  "action": {
-    "default_icon": {
-      "48": "icons/border-48.png"
-    },
-    "default_title": "Selfprism, registering all pages content"
-  }
+  ]
 }
