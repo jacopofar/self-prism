@@ -16,3 +16,33 @@ Some tests, no docs, take as is. Free as in free beer and free speech.
 ## How to run
 
 Ok, there's *some* documentation after all. All the commands are in the Makefile, which is quite self-explanatory. The extension only takes care to send the page content (with some adaptation) and the context to the server, which stores it in a local SQLLite database.
+
+
+## Running the server at startup
+
+On a Linux machine you can set up a script for systemd like this one:
+
+```bash
+#!/usr/bin/bash
+# this is to get UV in the PATH
+source /home/yourname/.bashrc
+cd /home/yourname/yourfolder/self-prism
+make run_dev
+```
+
+and then a systemd unit like this under `~/.config/systemd/user/selfprism.service`:
+
+to be enabled with `systemctl --user enable selfprism.service`
+
+```
+[Unit]
+Description=Run selfprism server
+
+[Service]
+Type=simple
+ExecStart=/home/yourname/startprism.sh
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+```
