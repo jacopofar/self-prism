@@ -4,7 +4,10 @@ _Spy yourself!_
 
 This tool lets you store the rendered HTML of each page you visit in a file, incuding the URL, title and timestamp.
 
-The two browser extensions (for chrome and firefox) send the data as a JSON to a server listening at `localhost:8987`. Firefox one also lets you toggle it on and off.
+~~The two browser extensions (for chrome and firefox) send the data as a JSON to a server listening at `localhost:8987`. Firefox one also lets you toggle it on and off.~~
+Apparently creating and publishing a Firefox extension is a pain (it has to be approved by Mozilla each time, currently waiting).
+
+Use the `tampermonkey.js` script in this repository. It will be injected in each visited page.
 
 `server.py` is a server which saves the data.
 
