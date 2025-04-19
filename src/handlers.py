@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @post("/log_visit")
 async def log_visit(data: VisitRequest) -> int:
     visit = Visit.from_visit_request(data)
-    logger.info(f"Visit at {visit.url}")
+    logger.info(f"Visit at {visit.url}, {len(visit.markdown) / 1024:.2f} KB")
     db.insert_visit(visit)
     return visit.id
 
